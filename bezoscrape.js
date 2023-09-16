@@ -9,6 +9,25 @@ async function getPageData(url) {
   // go to page
   await page.goto(url);
 
+  // gather results from page
+  const results = await page.evaluate(() => {
+    // create a function to extract relevant product detail. This needs to be within the evaluate function so that it has access to the DOM.
+    function extractProductDetails(product) {
+      console.log(product);
+    }
+
+    // create an array of products. Note that these selectors could change and may need to be updated.
+    const productsArr = Array.from(
+      document.querySelectorAll(".s-result-list .s-result-item")
+    );
+
+    // call method to extract relevant pruduct details.
+    const productDataArr = productsArr.map((product) =>
+      extractProductDetails(product)
+    );
+  });
+
+  // close the browser
   await browser.close();
 }
 
