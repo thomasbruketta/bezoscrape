@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const { formatDistance, subDays } = require("date-fns");
 
 async function getPageData(url) {
     // TODO: SET TO HEADLESS
@@ -19,7 +20,9 @@ async function getPageData(url) {
             const priceEl = product.querySelector(".a-price .a-offscreen");
             const ratingEl = product.querySelector("i.a-icon > .a-icon-alt");
             // use the aria-label to find delivery as the other selectors were less stable between various products.
-            const deliveryEl = product.querySelector("aria-label*='delivery'");
+            const deliveryEl = product.querySelector(
+                `[aria-label*="delivery"]`
+            );
 
             function dollarStringToNumber(dollarString) {
                 // Remove dollar signs, commas, and any other non-numeric characters (excluding dots and hyphens for decimals and negatives).
@@ -43,17 +46,21 @@ async function getPageData(url) {
                 let match;
 
                 // Keep extracting dates while there's a match
-                while ((match = regex.exec(str)) !== null) {
-                    dates.push(match[0]); // The full matched string (e.g., "Oct 2")
+                while (
+                    (match = regex.exec(
+                        deliveryEl.getAttribute("aria-label")
+                    )) !== null
+                ) {
+                    datesArr.push(match[0]); // The full matched string (e.g., "Oct 2")
                 }
                 return datesArr;
             }
 
-            function getEarliestDateFromArray(dateArr) {
+            function getEarliestDateFromArray(datesArr) {
                 const currentYear = new Date().getFullYear();
 
                 // Convert date strings into timestamps
-                const timestamps = datesArray.map((dateStr) => {
+                const timestamps = datesArr.map((dateStr) => {
                     const [monthStr, day] = dateStr.split(" ");
                     const monthNumber = new Date(
                         `${monthStr} 1, ${currentYear}`
@@ -68,6 +75,7 @@ async function getPageData(url) {
                 // Find the minimum timestamp (earliest date)
                 const earliestTimestamp = Math.min(...timestamps);
 
+                // TODO: use date-fns to help here.
                 return formatToDate(new Date(earliestTimestamp));
             }
 
