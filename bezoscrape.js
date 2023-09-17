@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
-import { dollarStringToNumber } from "./utils/conversion.js";
 import { formatDistance, subDays } from "date-fns";
+import { dollarStringToNumber } from "./utils/conversion.js";
 
 async function getPageData(url) {
     // TODO: SET TO HEADLESS
@@ -75,7 +75,7 @@ async function getPageData(url) {
                 return formatToDate(new Date(earliestTimestamp));
             }
 
-            if (!priceEl || !ratingEl || !deliveryEl) {
+            if (!priceEl || !ratingEl || !deliveryEl || !linkEl) {
                 return null;
             }
 
@@ -83,31 +83,43 @@ async function getPageData(url) {
                 price: priceEl.innerText,
                 rating: ratingEl.innerText,
                 date: deliveryEl.getAttribute("aria-label"),
-                link: linkEl.getAttribute("href"),
+                url: linkEl.getAttribute("href"),
             };
-
-            console.log(productDetails);
 
             return productDetails;
         }
 
         // create an array of products. Note that these selectors could change and may need to be updated.
-        const productsArr = Array.from(
+        const productsElArr = Array.from(
             document.querySelectorAll(".s-result-list .s-result-item")
         );
 
         // call method to extract relevant pruduct details.
-        const productDataArr = productsArr.map((product) =>
+        const productStringDetailArr = productsElArr.map((product) =>
             extractProductDetails(product)
         );
 
-        return productDataArr;
+        // filter out any null values
+        const cleanedProductStringDetailArr = productStringDetailArr.filter(
+            (product) => product !== null
+        );
+
+        // filter out any null values
+        // productDetailArr.filter(
+        //     (product) =>
+        //         product.date !== null &&
+        //         product.price !== null &&
+        //         product.rating !== null &&
+        //         product.url !== null
+        // );
+
+        return cleanedProductStringDetailArr;
     });
 
     // close the browser
     await browser.close();
 
-    // return array of product
+    // return array of products, all values are strings.
     return productDetailsArr;
 }
 
@@ -119,12 +131,33 @@ async function scrape() {
             "https://www.amazon.com/s?k=headphones&crid=VS7GDL0WY0ZR&sprefix=headphones%2Caps%2C522&ref=nb_sb_noss_2"
         ).then((pageDataArr) => {
             console.log(pageDataArr);
+            let result = {
+                cheapest: { value: Infinity, url: "" },
+                highestRated: { value: Infinity, url: "" },
+                earliestDelivery: { value: Infinity, url: "" },
+            };
+
+            // Go through each product and compare it to the current cheapest, highest rated, and earliest delivery products.
+            pageDataArr.forEach((product) => {
+                // Convert the price string to a number
+                const priceNum = dollarStringToNumber(product.price);
+
+                // Convert the rating string to a number
+
+                if (priceNum < result.cheapest.value) {
+                    result.cheapest.value = priceNum;
+                    result.cheapest.url = product.url;
+                }
+                // if (product.rating > result.highestRated.rating) {
+                //     result.highestRated = product.url;
+                // }
+                // if (product.date < result.earliestDelivery.date) {
+                //     result.earliestDelivery = product.url;
+                // }
+            });
+            // console.log(pageDataArr);
             // const cheapestProduct = findCheapestProduct(pageDataArr);
-            // console.log({
-            //     cheapeset: cheapestProduct,
-            //     highestRated: "highest rated product",
-            //     earliestDelivery: "earliest delivery product",
-            // });
+            console.log(result);
         });
     } catch (e) {
         console.log("Encountered and error:", e);
