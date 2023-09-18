@@ -1,3 +1,4 @@
+import { CONSTANTS } from "./utils/constants.js";
 import { dollarStringToNumber, extractTimestamp } from "./utils/conversion.js";
 
 // Function to process the page data and return the cheapest, highest rated, and earliest delivery products.
@@ -19,17 +20,20 @@ export function processPageData(pageDataArr) {
         // Convert the delivery date string to timestamp
         const deliveryDateTimestamp = extractTimestamp(product.date);
 
+        // construct the full url
+        const fullUrl = CONSTANTS.ROOT_URL + product.url;
+
         if (priceNum < result.cheapest.value) {
             result.cheapest.value = priceNum;
-            result.cheapest.url = product.url;
+            result.cheapest.url = fullUrl;
         }
         if (ratingNum > result.highestRated.value) {
             result.highestRated.value = ratingNum;
-            result.highestRated.url = product.url;
+            result.highestRated.url = fullUrl;
         }
         if (deliveryDateTimestamp < result.earliestDelivery.value) {
             result.earliestDelivery.value = deliveryDateTimestamp;
-            result.earliestDelivery.url = product.url;
+            result.earliestDelivery.url = fullUrl;
         }
     });
 
