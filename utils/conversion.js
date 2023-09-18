@@ -8,10 +8,51 @@ export function dollarStringToNumber(dollarString) {
     return parseFloat(cleanedString);
 }
 
-// Function to extract and parse the first date from a string for the formate "MMM DD" ex: "Aug 20".
+// function to parse the first delivery time from a string and format it as a timestamp
+function convertTimeToTimestamp(str, day) {
+    // Regular expression to extract the time in hourly format
+    const timeRegex = /(\d{1,2})\s*([apm]{2})/;
+    const match = str.match(timeRegex);
+
+    if (!match) {
+        return null; // No time found in the string
+    }
+
+    let [_, hour, period] = match;
+
+    // Convert to 24-hour format
+    let hour24 = parseInt(hour, 10);
+    if (period === "pm" && hour24 !== 12) {
+        hour24 += 12;
+    } else if (period === "am" && hour24 === 12) {
+        hour24 = 0;
+    }
+
+    // Set the date to either today or tomorrow
+    const date = new Date();
+    if (day === "tomorrow") {
+        date.setDate(date.getDate() + 1); // Move to the next day if "tomorrow"
+    }
+
+    date.setHours(hour24, 0, 0, 0); // Set the extracted hour, and reset minutes, seconds, and milliseconds to 0
+
+    return date.getTime(); //return the timestamp
+}
+
+// Function to extract and parse the first date from a string for the format "MMM DD" ex: "Aug 20".
+// returns a timestamp
 export function extractTimestamp(str) {
-    // First check if the delivery date is today or tomorrow.
-    // TODO
+    const lowerCaseStr = str.toLowerCase();
+    const isToday = lowerCaseStr.includes("today");
+    const isTomorrow = lowerCaseStr.includes("tomorrow" || "overnight");
+
+    // First check if the delivery date is today or tomorrow. If so handle it differently than dates.
+    if (isToday || isTomorrow) {
+        return convertTimeToTimestamp(
+            lowerCaseStr,
+            isToday ? "today" : "tomorrow"
+        );
+    }
 
     //If localizing in the future, this array should not be hardcoded. Instead, it should be generated from the locale.
     const months = [

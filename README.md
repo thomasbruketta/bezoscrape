@@ -34,9 +34,14 @@ npm install
 node bezoscrape.js <amazon_product_search_url>
 ```
 
+5. **Verify the Output**
+
+    The script will output the URL of the product with the lowest price, the product with the highest rating, and the product that has the quickest delivery time. IMPORTANT, the script runs a logged out session of Amazon. When validating results, be sure to use a logged out version of Amazon to ensure the results are accurate as Prime members get expedited shipping on many products.
+
 ## TODO:
 
 -   [ ] Add unit tests.
 -   [ ] Refactor and split large methods into smaller, testable ones.
 -   [ ] Address the edge case bug concerning shipping dates set in a future year.
 -   [ ] Introduce more informative error handling.
+-   [ ] Add support for signed in Amazon experience.
