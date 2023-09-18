@@ -11,12 +11,6 @@ async function scrape() {
         ).then((pageDataArr) => {
             const result = processPageData(pageDataArr);
 
-            // convert the earliest delivery timestamp back to a date string for validation
-            // result.earliestDelivery.value = format(
-            //     result.earliestDelivery.value,
-            //     "MMMM d, yyyy"
-            // );
-
             console.log(result);
         });
     } catch (e) {

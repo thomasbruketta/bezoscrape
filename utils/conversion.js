@@ -9,7 +9,10 @@ export function dollarStringToNumber(dollarString) {
 }
 
 // Function to extract and parse the first date from a string for the formate "MMM DD" ex: "Aug 20".
-export function extractDateTimestamp(str) {
+export function extractTimestamp(str) {
+    // First check if the delivery date is today or tomorrow.
+    // TODO
+
     //If localizing in the future, this array should not be hardcoded. Instead, it should be generated from the locale.
     const months = [
         "Jan",

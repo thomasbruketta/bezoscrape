@@ -1,11 +1,8 @@
-import {
-    dollarStringToNumber,
-    extractDateTimestamp,
-} from "./utils/conversion.js";
+import { dollarStringToNumber, extractTimestamp } from "./utils/conversion.js";
 
 // Function to process the page data and return the cheapest, highest rated, and earliest delivery products.
 export function processPageData(pageDataArr) {
-    let processedPageData = {
+    let result = {
         cheapest: { value: Infinity, url: "" },
         highestRated: { value: -Infinity, url: "" },
         earliestDelivery: { value: Infinity, url: "" },
@@ -20,21 +17,21 @@ export function processPageData(pageDataArr) {
         const ratingNum = parseFloat(product.rating);
 
         // Convert the delivery date string to timestamp
-        const deliveryDateTimestamp = extractDateTimestamp(product.date);
+        const deliveryDateTimestamp = extractTimestamp(product.date);
 
-        if (priceNum < processedPageData.cheapest.value) {
-            processedPageData.cheapest.value = priceNum;
-            processedPageData.cheapest.url = product.url;
+        if (priceNum < result.cheapest.value) {
+            result.cheapest.value = priceNum;
+            result.cheapest.url = product.url;
         }
-        if (ratingNum > processedPageData.highestRated.value) {
-            processedPageData.highestRated.value = ratingNum;
-            processedPageData.highestRated.url = product.url;
+        if (ratingNum > result.highestRated.value) {
+            result.highestRated.value = ratingNum;
+            result.highestRated.url = product.url;
         }
-        if (deliveryDateTimestamp < processedPageData.earliestDelivery.value) {
-            processedPageData.earliestDelivery.value = deliveryDateTimestamp;
-            processedPageData.earliestDelivery.url = product.url;
+        if (deliveryDateTimestamp < result.earliestDelivery.value) {
+            result.earliestDelivery.value = deliveryDateTimestamp;
+            result.earliestDelivery.url = product.url;
         }
     });
 
-    return processedPageData;
+    return result;
 }
