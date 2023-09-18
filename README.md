@@ -29,6 +29,7 @@ npm install
 4. **Run the Application**
 
     To scrape data from a specific Amazon search results page, run the following command:
+    example search url: https://www.amazon.com/s?k=roller+skates&crid=L0RRO035G49K&sprefix=roller+skate%2Caps%2C174&ref=nb_sb_noss_1
 
 ```bash
 node bezoscrape.js <amazon_product_search_url>
@@ -45,3 +46,4 @@ node bezoscrape.js <amazon_product_search_url>
 -   [ ] Address the edge case bug concerning shipping dates set in a future year.
 -   [ ] Introduce more informative error handling.
 -   [ ] Add support for signed in Amazon experience.
+-   [ ] Migrate to Typescript

@@ -58,7 +58,7 @@ export async function getPageData(url) {
     });
 
     // close the browser
-    // await browser.close();
+    //  await browser.close();
 
     // return array of products, all values are strings.
     return productDetailsArr;
