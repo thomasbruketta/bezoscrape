@@ -2,7 +2,7 @@
     "name": "bezoscrape",
     "version": "1.0.0",
     "description": "",
-    "main": "bezoscraper.js",
+    "main": "bezoscrape.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -10,6 +10,9 @@
     "keywords": [],
     "author": "",
     "license": "ISC",
+    "bin": {
+        "bezoscrape": "./bezoscrape.js"
+    },
     "dependencies": {
         "date-fns": "^2.30.0",
         "puppeteer": "^21.2.1"

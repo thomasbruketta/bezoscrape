@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { format } from "date-fns";
 import { getPageData } from "./getPageData.js";
 import { processPageData } from "./processPageData.js";
