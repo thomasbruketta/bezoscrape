@@ -86,3 +86,8 @@ export function extractTimestamp(str) {
 
     return dateObj.getTime(); // return the timestamp
 }
+
+export function timestampToDateString(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString();
+}

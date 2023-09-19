@@ -3,8 +3,8 @@ import puppeteer from "puppeteer";
 export async function getPageData(url) {
     // TODO: SET TO HEADLESS
     // setup puppeteer
-    const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage({ headless: "new" });
 
     // go to page
     await page.goto(url);
@@ -58,7 +58,7 @@ export async function getPageData(url) {
     });
 
     // close the browser
-    //  await browser.close();
+    await browser.close();
 
     // return array of products, all values are strings.
     return productDetailsArr;

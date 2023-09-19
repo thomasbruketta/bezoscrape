@@ -1,5 +1,9 @@
 import { CONSTANTS } from "./utils/constants.js";
-import { dollarStringToNumber, extractTimestamp } from "./utils/conversion.js";
+import {
+    dollarStringToNumber,
+    extractTimestamp,
+    timestampToDateString,
+} from "./utils/conversion.js";
 
 // Function to process the page data and return the cheapest, highest rated, and earliest delivery products.
 export function processPageData(pageDataArr) {
@@ -36,6 +40,11 @@ export function processPageData(pageDataArr) {
             result.earliestDelivery.url = fullUrl;
         }
     });
+
+    // Convert the timestamp back a human readable date
+    result.earliestDelivery.value = timestampToDateString(
+        result.earliestDelivery.value
+    );
 
     return result;
 }
