@@ -11,7 +11,7 @@ Follow the steps below to get up and running with Bezoscrape:
 1. **Clone the Repository**
 
 ```bash
-git clone <repository_url>
+git clone https://github.com/thomasbruketta/bezoscrape.git
 ```
 
 2. **Navigate to the Repository Directory**
