@@ -79,10 +79,18 @@ export function extractTimestamp(str) {
 
     const monthNumber = months.indexOf(match[1]);
     const dayNumber = parseInt(match[2], 10);
-    // TODO:  Account for when delivery dates are in the next calendar year. Currently it assume current year. (Ex, is is Dec 20, 2023 and the delivery date is Jan 2, 2024, it will return Jan 2, 2023)
-    const currentYear = new Date().getFullYear();
 
-    const dateObj = new Date(currentYear, monthNumber, dayNumber);
+    // Determine the correct year, accounting for year rollover
+    const now = new Date();
+    const currentMonth = now.getMonth(); // 0-indexed (0 for January)
+    let deliveryYear = now.getFullYear();
+
+    // If the parsed month is earlier than the current month, assume it's next year
+    if (monthNumber < currentMonth) {
+        deliveryYear += 1;
+    }
+
+    const dateObj = new Date(deliveryYear, monthNumber, dayNumber);
 
     return dateObj.getTime(); // return the timestamp
 }
