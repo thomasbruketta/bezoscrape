@@ -47,3 +47,5 @@ node bezoscrape.js <amazon_product_search_url>
 -   [ ] Introduce more informative error handling.
 -   [ ] Add support for signed in Amazon experience.
 -   [ ] Migrate to Typescript
+
+## New Features Section
