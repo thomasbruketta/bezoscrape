@@ -52,3 +52,4 @@ node bezoscrape.js <amazon_product_search_url>
 
 # Test Push for Release Note AI
 \n---\nTest commit 1.
+\n---\nTest commit 2.
