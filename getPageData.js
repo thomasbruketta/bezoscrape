@@ -1,10 +1,9 @@
 import puppeteer from "puppeteer";
 
 export async function getPageData(url) {
-    // TODO: SET TO HEADLESS
     // setup puppeteer
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage({ headless: "new" });
+    const browser = await puppeteer.launch({ headless: "new" });
+    const page = await browser.newPage();
 
     // go to page
     await page.goto(url);
