@@ -1,8 +1,6 @@
 // takes a string containing a dollar amount and returns a number
 import { formatDistance, subDays } from "date-fns";
 
-// Test commit
-
 export function dollarStringToNumber(dollarString) {
     // Remove dollar signs, commas, and any other non-numeric characters (excluding dots and hyphens for decimals and negatives).
     const cleanedString = dollarString.replace(/[^0-9.-]+/g, "");
